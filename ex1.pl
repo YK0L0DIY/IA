@@ -1,4 +1,11 @@
 %Descricao do problema:
+/*
+    Dando um estado inicial [XI,YI], tenta ir para um estado final [XF, YF]
+    tendo em conta as restrições impostas, i.e. as trancições entre estados
+    que não pode efetuar.
+*/
+
+%Estados representados por listas [X,Y].
 
 %estado_inicial(Estado)
 estado_inicial([1,1]).
@@ -7,7 +14,7 @@ estado_inicial([1,1]).
 estado_final([4,4]).
 
 %restricoes
-%fechado(X,Y,Xdestino,Ydestino)
+%fechado(X_Atual,Y_Atual,X_Destino,Y_Destino)
 fechado(1,1,1,2).
 fechado(2,1,2,2).
 fechado(3,1,4,1).
@@ -21,6 +28,12 @@ tamanhoY(4).
 %representacao dos operadores
 %op(Eact,OP,Eseg,Custo)
 
+/*
+    Para todos os predicados op/4.
+
+    Verifica se está nos limites do tabuleiro,
+    e se a transição entre Eact e o Eseg é possível.
+*/
 op([X,Y], cima, [X,Y1], 1) :-
     Y > 1,
     Y1 is Y - 1,
