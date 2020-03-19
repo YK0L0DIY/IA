@@ -16,10 +16,19 @@ estado_final([4,4]).
 %restricoes
 %fechado(X_Atual,Y_Atual,X_Destino,Y_Destino)
 fechado(1,1,1,2).
+fechado(1,2,1,1).
+
 fechado(2,1,2,2).
+fechado(2,2,2,1).
+
 fechado(3,1,4,1).
+fechado(4,1,3,1).
+
 fechado(3,2,3,3).
+fechado(3,3,3,2).
+
 fechado(4,2,4,3).
+fechado(4,3,4,2).
 
 %tamanho_tabela
 tamanhoX(4).
@@ -34,27 +43,28 @@ tamanhoY(4).
     Verifica se está nos limites do tabuleiro,
     e se a transição entre Eact e o Eseg é possível.
 */
-op([X,Y], cima, [X,Y1], 1) :-
-    Y > 1,
-    Y1 is Y - 1,
-    \+ fechado(X,Y,X,Y1).
 
-op([X,Y], baixo, [X,Y1], 1) :-
-    tamanhoY(T),
-    Y < T,
-    Y1 is Y + 1,
-    \+ fechado(X,Y,X,Y1).
-
-op([X,Y], esquerda, [X1,Y], 1) :-
+op([X,Y], cima, [X1,Y], 1) :-
     X > 1,
     X1 is X - 1,
     \+ fechado(X,Y,X1,Y).
 
-op([X,Y], direita, [X1,Y], 1) :-
+op([X,Y], baixo, [X1,Y], 1) :-
     tamanhoX(T),
     X < T,
     X1 is X + 1,
     \+ fechado(X,Y,X1,Y).
+
+op([X,Y], esquerda, [X,Y1], 1) :-
+    Y > 1,
+    Y1 is Y - 1,
+    \+ fechado(X,Y,X,Y1).
+
+op([X,Y], direita, [X,Y1], 1) :-
+    tamanhoY(T),
+    Y < T,
+    Y1 is Y + 1,
+    \+ fechado(X,Y,X,Y1).
 
 %representacao dos nos
 %no(Estado,no_pai,Operador,Custo,Profundidade)
