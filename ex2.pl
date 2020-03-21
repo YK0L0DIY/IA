@@ -44,7 +44,7 @@ tamanhoY(4).
     e se a transição entre Eact e o Eseg é possível.
 */
 
-op([X,Y], cima, [X1,Y], P) :-
+op([X,Y], cima, [X1,Y], 1) :-
     X > 1,
     X1 is X - 1,
     \+ fechado(X,Y,X1,Y).
@@ -67,14 +67,14 @@ op([X,Y], direita, [X,Y1], 1) :-
     \+ fechado(X,Y,X,Y1).
 
 %representacao dos nos
-%no(Estado,no_pai,Operador,Custo,Heristica,Profundidade)
-absolute(X,Y) :- X < 0, Y is -X.
-absolute(X,X) :- X >= 0.
+%no(Estado,no_pai,Operador,Custo,Heuristica,Profundidade)
+absoluto(X,X) :- X >= 0, !.
+absoluto(X,Y) :- X < 0, Y is -X.
 
-applyH([XInicial, YInicial] , H):- estado_final([XFinal, YFinal]),
-    X is XFinal-XInicial, absolute(X, XCalcualdo),
-    Y is YFinal-YInicial, absolute(C, YCalculado),
-    H is XCalcualdo+YCalculado.
+heuristica([XInicial, YInicial] , H):- estado_final([XFinal, YFinal]),
+    X is XFinal-XInicial, absoluto(X, XCalculado),
+    Y is YFinal-YInicial, absoluto(Y, YCalculado),
+    H is XCalculado+YCalculado.
 
 
 pesquisa_aux([no(E,Pai,Op,C,H,P)|_],no(E,Pai,Op,C,H,P)) :-
@@ -85,12 +85,12 @@ pesquisa_aux([E|R],Sol):-
         pesquisa_aux(LFinal,Sol).
 
 expande(no(E,Pai,Op,C,H,P),L):-
-	findall(no(En,no(E,Pai,Op,C,P), Opn, Cnn, H, P1),
+	findall(no(En,no(E,Pai,Op,C,H,P), Opn, Cnn, H1, P1),
                 (op(E,Opn,En,Cn),
                      P1 is P+1,
                      Cnn is Cn+C,
-                     applyH(En,HCalculada),
-                     H is Cn + HCalculada),
+                     heuristica(En,HCalculada),
+                     H1 is Cnn + HCalculada),
                 L).
 
 pesquisa :-
@@ -100,10 +100,10 @@ pesquisa :-
 
 
 ins_ord(E, [], [E]).
-ins_ord(no(E,Pai,Op,C,Her,P), [no(E1,Pai1,Op1,C1,Her1,P1)|T], [no(E,Pai,Op,C,Her,P),no(E1,Pai1,Op1,C1,Her1,P1)|T]) :-
-    Her =< Her1.
-ins_ord(no(E,Pai,Op,C,Her,P), [no(E1,Pai1,Op1,C1,Her1,P1)|T], [no(E1,Pai1,Op1,C1,Her1,P1)|T1]) :-
-	ins_ord(no(E,Pai,Op,C,Her,P), T, T1).
+ins_ord(no(E,Pai,Op,C,Heur,P), [no(E1,Pai1,Op1,C1,Heur1,P1)|T], [no(E,Pai,Op,C,Heur,P),no(E1,Pai1,Op1,C1,Heur1,P1)|T]) :-
+    Heur =< Heur1.
+ins_ord(no(E,Pai,Op,C,Heur,P), [no(E1,Pai1,Op1,C1,Heur1,P1)|T], [no(E1,Pai1,Op1,C1,Heur1,P1)|T1]) :-
+	ins_ord(no(E,Pai,Op,C,Heur,P), T, T1).
 
 insere_ordenado([],L,L).
 insere_ordenado([A|T], L, LF):-
