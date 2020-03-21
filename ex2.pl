@@ -5,9 +5,29 @@
     que não pode efetuar.
 */
 
+:- dynamic(fechado/4).
+:- dynamic(tamanhoX/1).
+:- dynamic(tamanhoY/1).
+:- dynamic(estado_inicial/1).
+:- dynamic(estado_final/1).
+
+criar_fecho([]).
+criar_fecho([[X,Y,X1,Y1]|T]):-
+    asserta(fechado(X,Y,X1,Y1)),
+    asserta(fechado(X1,Y1,X,Y)),
+    criar_fecho(T).
+
+pesquisa(R,Tx,Ty,Ei,Ef):-
+    criar_fecho(R),
+    asserta(tamanhoX(Tx)),
+    asserta(tamanhoY(Ty)),
+    asserta(estado_inicial(Ei)),
+    asserta(estado_final(Ef)),
+    pesquisa.
+
 %Estados representados por listas [X,Y].
 
-%estado_inicial(Estado)
+/*%estado_inicial(Estado)
 estado_inicial([1,1]).
 
 %estado_final(Estado)
@@ -32,7 +52,7 @@ fechado(4,3,4,2).
 
 %tamanho_tabela
 tamanhoX(4).
-tamanhoY(4).
+tamanhoY(4).*/
 
 %representacao dos operadores
 %op(Eact,OP,Eseg,Custo)

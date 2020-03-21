@@ -26,6 +26,33 @@ pesquisa(R,Tx,Ty,Ei,Ef):-
     pesquisa.
 
 
+/*%estado_inicial(Estado)
+estado_inicial([1,1]).
+
+%estado_final(Estado)
+estado_final([4,4]).
+
+%restricoes
+%fechado(X_Atual,Y_Atual,X_Destino,Y_Destino)
+fechado(1,1,1,2).
+fechado(1,2,1,1).
+
+fechado(2,1,2,2).
+fechado(2,2,2,1).
+
+fechado(3,1,4,1).
+fechado(4,1,3,1).
+
+fechado(3,2,3,3).
+fechado(3,3,3,2).
+
+fechado(4,2,4,3).
+fechado(4,3,4,2).
+
+%tamanho_tabela
+tamanhoX(4).
+tamanhoY(4).*/
+
 %representacao dos operadores
 %op(Eact,OP,Eseg,Custo)
 
