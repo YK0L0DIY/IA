@@ -100,6 +100,8 @@ heuristica([XInicial, YInicial] , H):- estado_final([XFinal, YFinal]),
 pesquisa_aux([no(E,Pai,Op,C,H,P)|_],no(E,Pai,Op,C,H,P)) :-
 	estado_final(E).
 pesquisa_aux([E|R],Sol):-
+    %length(R,Tamanhao),
+    %write(Tamanhao),nl,
 	expande(E,Lseg),
         insere_ordenado(Lseg,R,LFinal),
         pesquisa_aux(LFinal,Sol).

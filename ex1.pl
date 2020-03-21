@@ -88,12 +88,20 @@ op([X,Y], direita, [X,Y1], 1) :-
 %representacao dos nos
 %no(Estado,no_pai,Operador,Custo,Profundidade)
 
-pesquisa_largura([no(E,Pai,Op,C,P)|_],no(E,Pai,Op,C,P)) :-
+pesquisa_aux([no(E,Pai,Op,C,P)|_],no(E,Pai,Op,C,P), _) :-
 	estado_final(E).
-pesquisa_largura([E|R],Sol):-
-	expande(E,Lseg),
-        insere_fim(Lseg,R,LFinal),
-        pesquisa_largura(LFinal,Sol).
+pesquisa_aux([no(E,Pai,Op,C,P)|R],Sol, LE):-
+    %write(E),
+	\+ member(E, LE),
+	expande(no(E,Pai,Op,C,P),Lseg),
+        insere_inicio(Lseg,R,LFinal),
+        %length(LFinal,Tamanho),
+        %write(Tamanho),nl,
+        pesquisa_aux(LFinal,Sol, [E|LE]).
+pesquisa_aux([no(E,_,_,_,_)|R],Sol, LE):-
+	member(E, LE),
+    pesquisa_aux(R,Sol, LE).
+
 
 expande(no(E,Pai,Op,C,P),L):-
 	findall(no(En,no(E,Pai,Op,C,P), Opn, Cnn, P1),
@@ -102,10 +110,9 @@ expande(no(E,Pai,Op,C,P),L):-
 
 pesquisa :-
 	estado_inicial(S0),
-	pesquisa_largura([no(S0,[],[],0,0)], S),
+	pesquisa_aux([no(S0,[],[],0,0)], S, []),
 	write(S), nl.
 
+insere_inicio(A,B,C) :- append(A, B, C).
 
-insere_fim([],L,L).
-insere_fim(L,[],L).
-insere_fim(R,[A|S],[A|L]):- insere_fim(R,S,L).
+insere_fim(A,B,C) :- append(B, A, C).
