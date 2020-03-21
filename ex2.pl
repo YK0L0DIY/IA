@@ -67,32 +67,43 @@ op([X,Y], direita, [X,Y1], 1) :-
     \+ fechado(X,Y,X,Y1).
 
 %representacao dos nos
-%no(Estado,no_pai,Operador,Custo,Profundidade)
+%no(Estado,no_pai,Operador,Custo,Heristica,Profundidade)
 absolute(X,Y) :- X < 0, Y is -X.
 absolute(X,X) :- X >= 0.
 
-pesquisa_aux([no(E,Pai,Op,C,P)|_],no(E,Pai,Op,C,P)) :-
+applyH([XInicial, YInicial] , H):- estado_final([XFinal, YFinal]),
+    X is XFinal-XInicial, absolute(X, XCalcualdo),
+    Y is YFinal-YInicial, absolute(C, YCalculado),
+    H is XCalcualdo+YCalculado.
+
+
+pesquisa_aux([no(E,Pai,Op,C,H,P)|_],no(E,Pai,Op,C,H,P)) :-
 	estado_final(E).
 pesquisa_aux([E|R],Sol):-
 	expande(E,Lseg),
         insere_ordenado(Lseg,R,LFinal),
         pesquisa_aux(LFinal,Sol).
 
-expande(no(E,Pai,Op,C,P),L):-
-	findall(no(En,no(E,Pai,Op,C,P), Opn, Cnn, P1),
-                (op(E,Opn,En,Cn), P1 is P+1, Cnn is Cn+C),
+expande(no(E,Pai,Op,C,H,P),L):-
+	findall(no(En,no(E,Pai,Op,C,P), Opn, Cnn, H, P1),
+                (op(E,Opn,En,Cn),
+                     P1 is P+1,
+                     Cnn is Cn+C,
+                     applyH(En,HCalculada),
+                     H is Cn + HCalculada),
                 L).
 
 pesquisa :-
 	estado_inicial(S0),
-	pesquisa_aux([no(S0,[],[],0,0)], S),
+	pesquisa_aux([no(S0,[],[],0,0,0)], S),
 	write(S), nl.
 
 
 ins_ord(E, [], [E]).
-ins_ord(no(E,Pai,Op,C,P), [no(E1,Pai1,Op1,C1,P1)|T], [no(E,Pai,Op,C,P),no(E1,Pai1,Op1,C1,P1)|T]) :- C =< C1.
-ins_ord(no(E,Pai,Op,C,P), [no(E1,Pai1,Op1,C1,P1)|T], [no(E1,Pai1,Op1,C1,P1)|T1]) :-
-	ins_ord(no(E,Pai,Op,C,P), T, T1).
+ins_ord(no(E,Pai,Op,C,Her,P), [no(E1,Pai1,Op1,C1,Her1,P1)|T], [no(E,Pai,Op,C,Her,P),no(E1,Pai1,Op1,C1,Her1,P1)|T]) :-
+    Her =< Her1.
+ins_ord(no(E,Pai,Op,C,Her,P), [no(E1,Pai1,Op1,C1,Her1,P1)|T], [no(E1,Pai1,Op1,C1,Her1,P1)|T1]) :-
+	ins_ord(no(E,Pai,Op,C,Her,P), T, T1).
 
 insere_ordenado([],L,L).
 insere_ordenado([A|T], L, LF):-
