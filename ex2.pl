@@ -27,7 +27,7 @@ pesquisa(R,Tx,Ty,Ei,Ef):-
 
 %Estados representados por listas [X,Y].
 
-/*%estado_inicial(Estado)
+%estado_inicial(Estado)
 estado_inicial([1,1]).
 
 %estado_final(Estado)
@@ -52,7 +52,7 @@ fechado(4,3,4,2).
 
 %tamanho_tabela
 tamanhoX(4).
-tamanhoY(4).*/
+tamanhoY(4).
 
 %representacao dos operadores
 %op(Eact,OP,Eseg,Custo)
