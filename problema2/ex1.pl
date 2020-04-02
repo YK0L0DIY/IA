@@ -85,14 +85,13 @@ op([X,Y], direita, [X,Y1], 1) :-
 
 %representacao dos nos
 %no(Estado,no_pai,Operador,Custo,Heuristica,Profundidade)
-absoluto(X,X) :- X >= 0, !.
-absoluto(X,Y) :- X < 0, Y is -X.
-
-heur([XInicial, YInicial] , H):- estado_final([XFinal, YFinal]),
-    X is XFinal-XInicial, absoluto(X, XCalculado),
-    Y is YFinal-YInicial, absoluto(Y, YCalculado),
-    H is XCalculado+YCalculado.
-
+heur([X,Y], 0) :- estado_final([X,Y]).
+heur([X,Y], 3) :- estado_inicial([X,Y]).
+heur([X,Y], 1) :- tamanho(T), X > 1, X < T, Y > 1, Y < T.
+heur([T,_], 2) :- tamanho(T).
+heur([_,T], 2) :- tamanho(T).
+heur([1,_], 2).
+heur([_,1], 2).
 
 pesquisa_local_hill_climbingSemCiclos(E, _) :-
     estado_final(E),
@@ -101,7 +100,7 @@ pesquisa_local_hill_climbingSemCiclos(E, _) :-
 pesquisa_local_hill_climbingSemCiclos(E, L) :-
     write(E), write(' '),
     expande(E,LSeg),
-    sort(2, @<, LSeg, LOrd),
+    sort(3, @=<, LSeg, LOrd),
     obtem_no(LOrd, no(ES, Op, _)),
     \+ member(ES, L),
     write(Op), nl,
