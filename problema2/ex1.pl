@@ -66,22 +66,22 @@ op([X,Y], cima, [X1,Y], 1) :-
     X1 is X - 1,
     \+ fechado(X,Y,X1,Y).
 
-op([X,Y], baixo, [X1,Y], 1) :-
+op([X,Y], direita, [X,Y1], 1) :-
     tamanho(T),
-    X < T,
-    X1 is X + 1,
-    \+ fechado(X,Y,X1,Y).
+    Y < T,
+    Y1 is Y + 1,
+    \+ fechado(X,Y,X,Y1).
 
 op([X,Y], esquerda, [X,Y1], 1) :-
     Y > 1,
     Y1 is Y - 1,
     \+ fechado(X,Y,X,Y1).
 
-op([X,Y], direita, [X,Y1], 1) :-
+op([X,Y], baixo, [X1,Y], 1) :-
     tamanho(T),
-    Y < T,
-    Y1 is Y + 1,
-    \+ fechado(X,Y,X,Y1).
+    X < T,
+    X1 is X + 1,
+    \+ fechado(X,Y,X1,Y).
 
 %representacao dos nos
 %no(Estado,no_pai,Operador,Custo,Heuristica,Profundidade)
