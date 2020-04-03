@@ -88,6 +88,7 @@ op([X,Y], baixo, [X1,Y], 1) :-
 heur([X,Y], 0) :- estado_final([X,Y]).
 heur([X,Y], 3) :- estado_inicial([X,Y]).
 heur([X,Y], 1) :- tamanho(T), X > 1, X < T, Y > 1, Y < T.
+%heur([_,_], 1).
 heur([T,_], 2) :- tamanho(T).
 heur([_,T], 2) :- tamanho(T).
 heur([1,_], 2).
