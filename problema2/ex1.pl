@@ -94,18 +94,19 @@ heur([_,T], 2) :- tamanho(T).
 heur([1,_], 2).
 heur([_,1], 2).
 
-pesquisa_local_hill_climbingSemCiclos(E, _) :-
+pesquisa_local_hill_climbingSemCiclos(E, _,T) :-
     estado_final(E),
-    write(E), write(' ').
+    write(E), write(' '),nl,write("Tamanho: "),write(T).
 
-pesquisa_local_hill_climbingSemCiclos(E, L) :-
+pesquisa_local_hill_climbingSemCiclos(E, L,T) :-
     write(E), write(' '),
     expande(E,LSeg),
     sort(3, @=<, LSeg, LOrd),
     obtem_no(LOrd, no(ES, Op, _)),
     \+ member(ES, L),
     write(Op), nl,
-    (pesquisa_local_hill_climbingSemCiclos(ES,[E|L]) ; write(undo(Op)), write(' '), fail).
+    T1 is T+1,
+    (pesquisa_local_hill_climbingSemCiclos(ES,[E|L],T1) ; write(undo(Op)), write(' '), fail).
 
 expande(E, L):-
     findall(no(En,Opn, Heur),
@@ -118,4 +119,4 @@ obtem_no([_|T], H1) :-
 
 pesquisa :-
     estado_inicial(S0),
-    pesquisa_local_hill_climbingSemCiclos(S0, []).
+    pesquisa_local_hill_climbingSemCiclos(S0, [],0).
