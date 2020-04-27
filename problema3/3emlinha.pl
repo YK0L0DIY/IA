@@ -1,6 +1,7 @@
 % cada posicao pode ter "x", "o" ou "v" (vazio)
-estado_inicial([[x,v,v,v,v],[o,o,v,v,v],[x,o,x,v,v],[o,x,x,o,v]]).
-%estado_inicial([[v,v,v],[v,v,v],[v,v,v]]).
+%estado_inicial([[v,v,v,v,v],[v,v,v,v,v],[x,o,v,v,v],[o,x,x,o,v]]).
+estado_inicial([[v,v,v,v,v],[v,v,v,v,v],[x,o,x,v,v],[o,x,x,o,o]]).
+%estado_inicial([[v,v,v,v,v],[v,v,v,v,v],[v,v,v,v,v],[v,v,v,v,v]]).
 
 terminal(G) :- linhas(G,_).
 terminal(G) :- colunas(G,_).
