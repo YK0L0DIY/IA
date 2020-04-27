@@ -1,8 +1,25 @@
+joga :- estado_inicial(Ei), joga(Ei).
 
-joga :-  
-	estado_inicial(Ei), 
-	minimax_decidir(Ei,Op),
-	write(Op),nl.
+pede_coluna(Coluna):-
+    read(Coluna).
+
+joga_pc(Ei):-terminal(Ei),write("Game Over!!!!").
+joga_pc(Ei):-minimax_decidir(Ei, joga(X,Y)),
+             write(joga(X,Y)),nl,
+             joga_vazio(Ei, x, X, Y, Enn),
+             joga(Enn).
+
+joga(Ei):- terminal(Ei),printTable(Ei),write("Game Over!!!!").
+joga(Ei) :-printTable(Ei),
+            pede_coluna(Coluna),
+            joga_vazio(Ei, o, _, Coluna, En),
+            printTable(En),
+            joga_pc(En).
+
+printTable([]).
+printTable([T|Tl]):-
+    write(T),nl,
+    printTable(Tl).
 
 % decide qual é a melhor jogada num estado do jogo
 % minimax_decidir(Estado, MelhorJogada)

@@ -56,7 +56,7 @@ diagonal([[_,_,_,_,_],[_,_,_,_,X],[_,_,_,X,_], [_,_,X,_,_]],X) :- X \= v.
 cheio([L1,L2,L3,L4]) :-
     append(L1,L2, L12),
     append(L12, L3, L123),
-    append(L123, L4, L1234)
+    append(L123, L4, L1234),
     \+ member(v, L1234).
 
 %função de utilidade, retorna o valor dos estados terminais, 1 ganha -1 perde
@@ -167,7 +167,7 @@ joga_vazio([[C11, C12, v, C14, C15],
             [C41, C42, C43, C44, C45]],
             J,
             1,3,
-            [[C11, C22, CJ, C14, C15],
+            [[C11, C12, J, C14, C15],
             [C21, C22, C23, C24, C25],
             [C31, C32, C33, C34, C35],
             [C41, C42, C43, C44, C45]]):- C23 \= v, C33 \= v, C43 \= v.
@@ -197,7 +197,7 @@ joga_vazio([[C11, C12, C13, C14, C15],
 joga_vazio([[C11, C12, C13, C14, C15],
             [C21, C22, C23, C24, C25],
             [C31, C32, C33, C34, C35],
-            [C41, vC42, v, C44, C45]],
+            [C41, C42, v, C44, C45]],
             J,
             4,3,
             [[C11, C12, C13, C14, C15],
@@ -261,7 +261,7 @@ joga_vazio([[C11, C12, C13, C14, v],
             [C41, C42, C43, C44, C45]]):- C25 \= v, C35 \= v, C45 \= v.
 
 joga_vazio([[C11, C12, C13, C14, C15],
-            [C21, C32, C23, C24, v],
+            [C21, C22, C23, C24, v],
             [C31, C32, C33, C34, C35],
             [C41, C42, C43, C44, C45]],
             J,
