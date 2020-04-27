@@ -1,5 +1,5 @@
 % cada posicao pode ter "x", "o" ou "v" (vazio)
-estado_inicial([[x,v,v],[o,o,v],[v,v,x]]).
+estado_inicial([[x,v,v,v,v],[o,o,v,v,v],[x,o,x,v,v],[o,x,x,o,v]]).
 %estado_inicial([[v,v,v],[v,v,v],[v,v,v]]).
 
 terminal(G) :- linhas(G,_).
@@ -7,21 +7,57 @@ terminal(G) :- colunas(G,_).
 terminal(G) :- diagonal(G,_).
 terminal(G) :- cheio(G).
 
-linhas([[X,X,X],_,_],X) :- X \= v.
-linhas([_,[X,X,X],_],X) :- X \= v.
-linhas([_,_,[X,X,X]],X) :- X \= v.
+linhas([[X,X,X,_,_],_,_,_],X) :- X \= v.
+linhas([[_,X,X,X,_],_,_,_],X) :- X \= v.
+linhas([[_,_,X,X,X],_,_,_],X) :- X \= v.
 
-colunas([[X,_,_],[X,_,_],[X,_,_]],X) :- X \= v.
-colunas([[_,X,_],[_,X,_],[_,X,_]],X) :- X \= v.
-colunas([[_,_,X],[_,_,X],[_,_,X]],X) :- X \= v.
+linhas([_,[X,X,X,_,_],_,_],X) :- X \= v.
+linhas([_,[_,X,X,X,_],_,_],X) :- X \= v.
+linhas([_,[_,_,X,X,X],_,_],X) :- X \= v.
 
-diagonal([[X,_,_],[_,X,_],[_,_,X]],X) :- X \= v.
-diagonal([[_,_,X],[_,X,_],[X,_,_]],X) :- X \= v.
+linhas([_,_,[X,X,X,_,_],_],X) :- X \= v.
+linhas([_,_,[_,X,X,X,_],_],X) :- X \= v.
+linhas([_,_,[_,_,X,X,X],_],X) :- X \= v.
 
-cheio([L1,L2,L3]) :- 
-	append(L1,L2, L12),
-	append(L12, L3, L123),
-	\+ member(v, L123).
+linhas([_,_,_,[X,X,X,_,_]],X) :- X \= v.
+linhas([_,_,_,[_,X,X,X,_]],X) :- X \= v.
+linhas([_,_,_,[_,_,X,X,X]],X) :- X \= v.
+
+colunas([[X,_,_,_,_],[X,_,_,_,_],[X,_,_,_,_], [_,_,_,_,_]],X) :- X \= v.
+colunas([[_,_,_,_,_],[X,_,_,_,_],[X,_,_,_,_], [X,_,_,_,_]],X) :- X \= v.
+
+colunas([[_,X,_,_,_],[_,X,_,_,_],[_,X,_,_,_], [_,_,_,_,_]],X) :- X \= v.
+colunas([[_,_,_,_,_],[_,X,_,_,_],[_,X,_,_,_], [_,X,_,_,_]],X) :- X \= v.
+
+colunas([[_,_,X,_,_],[_,_,X,_,_],[_,_,X,_,_], [_,_,_,_,_]],X) :- X \= v.
+colunas([[_,_,_,_,_],[_,_,X,_,_],[_,_,X,_,_], [_,_,X,_,_]],X) :- X \= v.
+
+colunas([[_,_,_,X,_],[_,_,_,X,_],[_,_,_,X,_], [_,_,_,_,_]],X) :- X \= v.
+colunas([[_,_,_,_,_],[_,_,_,X,_],[_,_,_,X,_], [_,_,_,X,_]],X) :- X \= v.
+
+colunas([[_,_,_,_,X],[_,_,_,_,X],[_,_,_,_,X], [_,_,_,_,_]],X) :- X \= v.
+colunas([[_,_,_,_,_],[_,_,_,_,X],[_,_,_,_,X], [_,_,_,_,X]],X) :- X \= v.
+
+
+diagonal([[X,_,_,_,_],[_,X,_,_,_],[_,_,X,_,_], [_,_,_,_,_]],X) :- X \= v.
+diagonal([[_,_,_,_,_],[_,X,_,_,_],[_,_,X,_,_], [_,_,_,X,_]],X) :- X \= v.
+diagonal([[_,_,_,_,_],[X,_,_,_,_],[_,X,_,_,_], [_,_,X,_,_]],X) :- X \= v.
+diagonal([[_,X,_,_,_],[_,_,X,_,_],[_,_,_,X,_], [_,_,_,_,_]],X) :- X \= v.
+diagonal([[_,_,_,_,_],[_,_,X,_,_],[_,_,_,X,_], [_,_,_,_,X]],X) :- X \= v.
+diagonal([[_,_,X,_,_],[_,_,_,X,_],[_,_,_,_,X], [_,_,_,_,_]],X) :- X \= v.
+
+diagonal([[_,_,X,_,_],[_,X,_,_,_],[X,_,_,_,_], [_,_,_,_,_]],X) :- X \= v.
+diagonal([[_,_,_,_,_],[_,_,X,_,_],[_,X,_,_,_], [X,_,_,_,_]],X) :- X \= v.
+diagonal([[_,_,_,X,_],[_,_,X,_,_],[_,X,_,_,_], [_,_,_,_,_]],X) :- X \= v.
+diagonal([[_,_,_,_,X],[_,_,_,X,_],[_,_,X,_,_], [_,_,_,_,_]],X) :- X \= v.
+diagonal([[_,_,_,_,_],[_,_,_,X,_],[_,_,X,_,_], [_,X,_,_,_]],X) :- X \= v.
+diagonal([[_,_,_,_,_],[_,_,_,_,X],[_,_,_,X,_], [_,_,X,_,_]],X) :- X \= v.
+
+cheio([L1,L2,L3,L4]) :-
+    append(L1,L2, L12),
+    append(L12, L3, L123),
+    append(L123, L4, L1234)
+    \+ member(v, L1234).
 
 %função de utilidade, retorna o valor dos estados terminais, 1 ganha -1 perde
 valor(G, 1) :- linhas(G,x).
