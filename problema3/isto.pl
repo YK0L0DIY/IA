@@ -2,8 +2,8 @@ joga :- estado_inicial(Ei), joga(Ei).
 
 joga(Ei) :- pede_coluna(Coluna),
             joga_vazio(Ei, o, Coluna, _, En),
-            minimax_decidir(En, ISTO),
-            joga_vazio(En, x, ISTOX, ISTOY, Enn),
+            minimax_decidir(En, joga(X,Y)),
+            joga_vazio(En, x, X, Y, Enn),
             joga(Enn).
 
 joga_vazio([[v, C12, C13, C14, C15],
