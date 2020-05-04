@@ -32,10 +32,13 @@ diagl([Row|Matrix], Idx, P, [X|LDiag]) :-
 % 1. I get first column from Tail and make a first row (NT) from it
 % 2. I transpose "smaller matrix" Rest into NRest
 % 3. I take T and make it to be a first column of NTail
+
 trans([[H|T] |Tail], [[H|NT] |NTail]) :-
 	firstCol(Tail, NT, Rest), trans(Rest, NRest), firstCol(NTail, T, NRest).
 trans([], []).
+
 % firstCol(+Matrix, -Column, -Rest)  or  (-Matrix, +Column, +Rest)
+
 firstCol([[H|T] |Tail], [H|Col], [T|Rows]) :- firstCol(Tail, Col, Rows).
 firstCol([], [], []).
 
@@ -43,11 +46,10 @@ magic_square(N, Vars) :-
 	Nmax is N * N,
 	create_mat(N, N, Matrix),
 	flatten(Matrix, Vars), % cria-se a linha completa
-	fd_domain(Vars,1,Nmax), % limita-se as variavies
-	fd_all_different(Vars), % todos teem de ser diferentes
-    sum_row(Matrix, SumDim), % veririfca-se se a soma das linhas é correta
+	fd_domain(Vars,[0,1]), % limita-se as variavies
+    sum_row(Matrix, 1), % veririfca-se se a soma das linhas é correta
     trans(Matrix,TMatrix), % faz-se a transposta
-    sum_row(TMatrix,SumDim), % calcula-se a soma das linhas da transposta
-    diagonal_sum(Matrix,N,-1,SumDim), % calcula-se a diagonal crescente
-    diagonal_sum(Matrix,1,+1,SumDim), % calcula-se a diagonal decrescente
+    sum_row(TMatrix,1), % calcula-se a soma das linhas da transposta
+    diagonal_sum(Matrix,N,-1,1), % calcula-se a diagonal crescente
+    diagonal_sum(Matrix,1,+1,1), % calcula-se a diagonal decrescente
     fd_labeling(Vars). %  fim
