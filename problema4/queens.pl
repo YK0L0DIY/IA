@@ -22,5 +22,3 @@ queens([C|Cs], Row0, [Col|Solution]) :-
 	select(Col-Vars, [C|Cs], Board),
 	arg(Row, Vars, Row-Row),
 	queens(Board, Row, Solution).
-
-
