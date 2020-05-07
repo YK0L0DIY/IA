@@ -58,3 +58,11 @@ pesquisa(N) :-
     asserta(tamanho(N)),
 	criar_estado_inicial().
 	%pesquisa_local_hill_climbingSemCiclos(S0, []).
+
+crirar_tabuleiro([H|T], [Lista,TL]) :-
+    tamanho(N),
+    length(Lista, N),
+    fd_domain(Lista, [0,1]).
+
+steAll([H|T],[0|T]):-
+    setAll(T,R).
