@@ -59,10 +59,15 @@ pesquisa(N) :-
 	criar_estado_inicial().
 	%pesquisa_local_hill_climbingSemCiclos(S0, []).
 
-crirar_tabuleiro([H|T], [Lista,TL]) :-
+criar_tabuleiro([], []).
+criar_tabuleiro([H|T], [Lista1|TL]) :-
     tamanho(N),
-    length(Lista, N),
-    fd_domain(Lista, [0,1]).
+    N1 is N-1,
+    create_list_of_Zeros(N1,Lista),
+    nth1(H, Lista1, 1,Lista),
+    criar_tabuleiro(T,TL).
 
-steAll([H|T],[0|T]):-
-    setAll(T,R).
+create_list_of_Zeros(1,[0]).
+create_list_of_Zeros(X,[0|T]) :-
+    X1 is X -1,
+    create_list_of_Zeros(X1,T).
