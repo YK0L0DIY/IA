@@ -1,5 +1,6 @@
 :- dynamic(tamanho/1).
 :- dynamic(estado_inicial/1).
+:- use_module(library(clpfd)).
 
 %estado inicial consoante o tamanho
 criar_estado_inicial():-
@@ -13,18 +14,14 @@ mover([_|[]],1,Y,[Y]).
 mover([_|T],1,Y,[Y|T]).
 
 mover([E|T],X,Y,[E|En]):-
-    X \= 1,
     X1 is X-1,
     mover(T,X1,Y,En).
 
 % realizar joagada
 % op(estadio_inicial, nome_jogada, rainha_a_mover, posicao_para_onde_mocer, estado_resultante)
-op(E,mover,X,Y,En) :-
-    tamanho(N),
-    X > 0,
-    N >= X,
-    Y > 0,
-    N >= Y,
+op(E,[X,Y],En,1) :-
+    tamanho(N),!,
+    [X,Y] ins 1..N, labeling([max(X),min(Y)],[X,Y]),
     mover(E,X,Y,En).
 
 % verificar se e estado final
@@ -48,20 +45,19 @@ pesquisa_local_hill_climbingSemCiclos(E, L) :-
 
 expande(E, L):-
 	findall(no(En,Opn, Heur),
-                (op(E,Opn,En,_), heur(En, Heur)),
+                (op(E,Opn,En,_), heu(En, Heur)),
                 L).
 
 obtem_no([H|_], H).
 obtem_no([_|T], H1) :-
 	obtem_no(T, H1).
 
-pesquisa(N,R) :-
+pesquisa(N) :-
     asserta(tamanho(N)),
 	criar_estado_inicial(),
 	estado_inicial(E),!,
 	write(E),nl,
-	safe(E,R).
-	%pesquisa_local_hill_climbingSemCiclos(S0, []).
+	pesquisa_local_hill_climbingSemCiclos(E, []).
 
 heu([],0).
 heu([Queen|Others],R) :-
@@ -108,16 +104,3 @@ sum_L(Y,[Y1|Ylist],S):-
     Y is Y1,
     sum_L(Y,Ylist,S1),
     S is S1 +1.
-
-criar_tabuleiro([], []).
-criar_tabuleiro([H|T], [Lista1|TL]) :-
-    tamanho(N),
-    N1 is N-1,
-    create_list_of_Zeros(N1,Lista),
-    nth1(H, Lista1, 1,Lista),
-    criar_tabuleiro(T,TL).
-
-create_list_of_Zeros(1,[0]).
-create_list_of_Zeros(X,[0|T]) :-
-    X1 is X -1,
-    create_list_of_Zeros(X1,T).
