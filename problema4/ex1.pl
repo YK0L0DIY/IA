@@ -30,10 +30,48 @@ estado_final(E) :-
     tamanho(N),
     queens(N,E).
 
+print_elements([]).             % print de um elemento
+print_elements([Element|T]):-
+    write(Element),print_elements(T).
+
+print_rows([]).               % print da matrix
+print_rows([H|T]) :- print_elements(H), nl, print_rows(T).
+
+% retirado da net http://blog.ivank.net/prolog-matrices.html
+% trans(+M1, -M2) - transpose of square matrix
+% 1. I get first column from Tail and make a first row (NT) from it
+% 2. I transpose "smaller matrix" Rest into NRest
+% 3. I take T and make it to be a first column of NTail
+
+trans([[H|T] |Tail], [[H|NT] |NTail]) :-
+    firstCol(Tail, NT, Rest), trans(Rest, NRest), firstCol(NTail, T, NRest).
+trans([], []).
+
+% firstCol(+Matrix, -Column, -Rest)  or  (-Matrix, +Column, +Rest)
+
+firstCol([[H|T] |Tail], [H|Col], [T|Rows]) :- firstCol(Tail, Col, Rows).
+firstCol([], [], []).
+
+criar_tabuleiro([], []).
+criar_tabuleiro([H|T], [Lista1|TL]) :-
+    tamanho(N),
+    N1 is N-1,
+    create_list_of_Zeros(N1,Lista),
+    nth1(H, Lista1, ' Q ',Lista),
+    criar_tabuleiro(T,TL).
+
+create_list_of_Zeros(1,[' _ ']).
+create_list_of_Zeros(X,[' _ '|T]) :-
+    X1 is X -1,
+    create_list_of_Zeros(X1,T).
+
 % algoritmo pesquisa
 pesquisa_local_hill_climbingSemCiclos(E, _) :-
 	estado_final(E),
-	write(E), write(' ').
+	write(E), write(' '), nl, nl,
+    criar_tabuleiro(E, T),
+    trans(T, T1),
+    print_rows(T1).
 
 pesquisa_local_hill_climbingSemCiclos(E, L) :-
 	write(E), write(' '),
