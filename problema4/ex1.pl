@@ -21,7 +21,7 @@ mover([E|T],X,Y,[E|En]):-
 % op(estadio_inicial, nome_jogada, rainha_a_mover, posicao_para_onde_mocer, estado_resultante)
 op(E,[X,Y],En,1) :-
     tamanho(N),!,
-    [X,Y] ins 1..N, labeling([max(X),min(Y)],[X,Y]),
+    [X,Y] ins 1..N, labeling([max(X),min(Y)],[X,Y]), %gera valores de X e y entre 1 e o tamanho. Nao meche no taboleiro
     mover(E,X,Y,En).
 
 % verificar se e estado final
