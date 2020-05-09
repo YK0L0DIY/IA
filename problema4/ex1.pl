@@ -52,6 +52,7 @@ trans([], []).
 firstCol([[H|T] |Tail], [H|Col], [T|Rows]) :- firstCol(Tail, Col, Rows).
 firstCol([], [], []).
 
+%cira tabuleiro para display
 criar_tabuleiro([], []).
 criar_tabuleiro([H|T], [Lista1|TL]) :-
     tamanho(N),
@@ -64,6 +65,12 @@ create_list_of_Zeros(1,[' _ ']).
 create_list_of_Zeros(X,[' _ '|T]) :-
     X1 is X -1,
     create_list_of_Zeros(X1,T).
+
+time(A) :-
+       statistics(walltime, [TimeSinceStart | [TimeSinceLastCall]]),
+       pesquisa(A),
+       statistics(walltime, [NewTimeSinceStart | [ExecutionTime]]),
+       write('Execution took '), write(ExecutionTime), write(' ms.'), nl.
 
 % algoritmo pesquisa
 pesquisa_local_hill_climbingSemCiclos(E, _) :-
