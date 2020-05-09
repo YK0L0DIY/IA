@@ -5,7 +5,8 @@
 criar_estado_inicial():-
     tamanho(T),
     length(N, T),
-    maplist(random(1,T), N),
+    T1 is T +1,
+    maplist(random(1,T1), N),
     asserta(estado_inicial(N)).
 
 mover([_|[]],1,Y,[Y]).
@@ -54,10 +55,59 @@ obtem_no([H|_], H).
 obtem_no([_|T], H1) :-
 	obtem_no(T, H1).
 
-pesquisa(N) :-
+pesquisa(N,R) :-
     asserta(tamanho(N)),
-	criar_estado_inicial().
+	criar_estado_inicial(),
+	estado_inicial(E),!,
+	write(E),nl,
+	safe(E,R).
 	%pesquisa_local_hill_climbingSemCiclos(S0, []).
+
+heu([],0).
+heu([Queen|Others],R) :-
+    heu(Others,R0),
+    sum_d1(Queen,Others,1,R1),
+    sum_d2(Queen,Others,1,R2),
+    sum_L(Queen,Others,R3),
+    R is R0+R1 +R2+R3.
+
+sum_d1(_,[],_,0).
+sum_d1(Y,[Y1|Ylist],Xdist,S):-
+    Y2 is Y1-Y,
+    Y2 \= Xdist,
+    Dist1 is Xdist + 1,
+    sum_d1(Y,Ylist,Dist1,S).
+
+sum_d1(Y,[Y1|Ylist],Xdist,S):-
+    Y2 is Y1-Y,
+    Y2 is Xdist,
+    Dist1 is Xdist + 1,
+    sum_d1(Y,Ylist,Dist1,S1),
+    S is S1 +1.
+
+sum_d2(_,[],_,0).
+sum_d2(Y,[Y1|Ylist],Xdist,S):-
+    Y2 is Y-Y1,
+    Y2 \= Xdist,
+    Dist1 is Xdist + 1,
+    sum_d2(Y,Ylist,Dist1,S).
+
+sum_d2(Y,[Y1|Ylist],Xdist,S):-
+    Y2 is Y-Y1,
+    Y2 is Xdist,
+    Dist1 is Xdist + 1,
+    sum_d2(Y,Ylist,Dist1,S1),
+    S is S1 +1.
+
+sum_L(_,[],0).
+sum_L(Y,[Y1|Ylist],S):-
+    Y \= Y1,
+    sum_L(Y,Ylist,S).
+
+sum_L(Y,[Y1|Ylist],S):-
+    Y is Y1,
+    sum_L(Y,Ylist,S1),
+    S is S1 +1.
 
 criar_tabuleiro([], []).
 criar_tabuleiro([H|T], [Lista1|TL]) :-
