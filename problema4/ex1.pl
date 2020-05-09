@@ -10,6 +10,7 @@ criar_estado_inicial():-
     maplist(random(1,T1), N),
     asserta(estado_inicial(N)).
 
+% Dado um estado E move a rainha X para a posição Y, formando En.
 mover([_|[]],1,Y,[Y]).
 mover([_|T],1,Y,[Y|T]).
 
@@ -18,7 +19,7 @@ mover([E|T],X,Y,[E|En]):-
     mover(T,X1,Y,En).
 
 % realizar joagada
-% op(estadio_inicial, nome_jogada, rainha_a_mover, posicao_para_onde_mocer, estado_resultante)
+% op(estadio_inicial, [rainha_a_mover, posicao_para_onde_mover], estado_resultante, peso_da_op)
 op(E,[X,Y],En,1) :-
     tamanho(N),!,
     [X,Y] ins 1..N, labeling([max(X),min(Y)],[X,Y]), %gera valores de X e y entre 1 e o tamanho. Nao meche no taboleiro
@@ -45,28 +46,32 @@ pesquisa_local_hill_climbingSemCiclos(E, L) :-
 
 expande(E, L):-
 	findall(no(En,Opn, Heur),
-                (op(E,Opn,En,_), heu(En, Heur)),
+                (op(E,Opn,En,_), heur(En, Heur)),
                 L).
 
 obtem_no([H|_], H).
 obtem_no([_|T], H1) :-
 	obtem_no(T, H1).
 
+% cria um tabuleiro com tamnho N.
+% cria um estado inicial para mesmo.
+% efetua movimentos de modo a que as rainhas no estado inicial deixem de se atacar.
 pesquisa(N) :-
     asserta(tamanho(N)),
 	criar_estado_inicial(),
 	estado_inicial(E),!,
-	write(E),nl,
 	pesquisa_local_hill_climbingSemCiclos(E, []).
 
-heu([],0).
-heu([Queen|Others],R) :-
-    heu(Others,R0),
+% Dado um estado devolve o númeor de ataques nesse estado.
+heur([],0).
+heur([Queen|Others],R) :-
+    heur(Others,R0),
     sum_d1(Queen,Others,1,R1),
     sum_d2(Queen,Others,1,R2),
     sum_L(Queen,Others,R3),
     R is R0+R1 +R2+R3.
 
+% Diagonal Y=-X. Verifica se há ataques na mesma e devolve a sua soma.
 sum_d1(_,[],_,0).
 sum_d1(Y,[Y1|Ylist],Xdist,S):-
     Y2 is Y1-Y,
@@ -81,6 +86,7 @@ sum_d1(Y,[Y1|Ylist],Xdist,S):-
     sum_d1(Y,Ylist,Dist1,S1),
     S is S1 +1.
 
+% Diagonal Y=X. Verifica se há ataques na mesma e devolve a sua soma.
 sum_d2(_,[],_,0).
 sum_d2(Y,[Y1|Ylist],Xdist,S):-
     Y2 is Y-Y1,
@@ -95,6 +101,7 @@ sum_d2(Y,[Y1|Ylist],Xdist,S):-
     sum_d2(Y,Ylist,Dist1,S1),
     S is S1 +1.
 
+% Linha. Verifica se há ataques na mesma e devolve a sua soma.
 sum_L(_,[],0).
 sum_L(Y,[Y1|Ylist],S):-
     Y \= Y1,
