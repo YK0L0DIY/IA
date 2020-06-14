@@ -6,7 +6,7 @@ import copy
 def pos_is_playable(state: dict, pos: int, player: int):
     pos_value = state[f'line_{player}'][pos]
     player_line = state[f'line_{player}']
-    opponent_line = state[f'line_{1 if player == 1 else 0}']
+    opponent_line = state[f'line_{0 if player == 1 else 1}']
 
     if pos_value == 0:
         return False
@@ -23,25 +23,14 @@ def pos_is_playable(state: dict, pos: int, player: int):
 def play(state: dict, pos: int, player: int):
     result_state = copy.deepcopy(state)
 
-    if sum(result_state['line_0']) == 1 and sum(result_state['line_1']) == 1:
-        player_1_pos = result_state['line_1'].index(1)
-        player_0_pos = result_state['line_0'].index(1)
+    number_of_elements = result_state[f'line_{player}'][pos]
+    result_state[f'line_{player}'][pos] = 0
 
-        if abs(player_1_pos - player_0_pos) == 5:
-            result_state['line_0'][pos] = 0
-            result_state['line_1'][pos] = 0
-            result_state['player_0'] += 1
-            result_state['player_1'] += 1
+    result_state, last_placed = distribute(result_state, pos + 1, number_of_elements, player, (pos, player))
 
-    else:
-        number_of_elements = result_state[f'line_{player}'][pos]
-        result_state[f'line_{player}'][pos] = 0
-
-        result_state, last_placed = distribute(result_state, pos + 1, number_of_elements, player, (pos, player))
-
-        if player != last_placed['player']:
-            result_state, points = collect(result_state, last_placed)
-            result_state[f'player_{player}'] += points
+    if player != last_placed['player']:
+        result_state, points = collect(result_state, last_placed)
+        result_state[f'player_{player}'] += points
 
     return result_state
 
@@ -101,7 +90,21 @@ def game_over(state: dict):
 
 
 def final_state(state: dict):
+
     if not game_over(state):
+
+        if sum(state['line_0']) == 1 and sum(state['line_1']) == 1:
+            player_1_pos = state['line_1'].index(1)
+            player_0_pos = state['line_0'].index(1)
+
+            if abs(player_1_pos - player_0_pos) == 5:
+                state['line_0'][player_0_pos] = 0
+                state['line_1'][player_1_pos] = 0
+                state['player_0'] += 1
+                state['player_1'] += 1
+
+                return True
+
         for i in range(0, LINE_SIZE):
             if pos_is_playable(state, i, 0) or pos_is_playable(state, i, 1):
                 return False
