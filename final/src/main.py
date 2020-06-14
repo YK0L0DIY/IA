@@ -19,10 +19,10 @@ if __name__ == '__main__':
     #     'line_0': [2, 1, 0, 0, 0, 2],
     # }
     initial_state = {
-        'player_1': 25,
+        'player_1': 0,
         'player_0': 0,
-        'line_1': [0, 0, 0, 0, 0, 2],
-        'line_0': [2, 1, 0, 0, 0, 2],
+        'line_1': [4, 4, 4, 4, 4, 4],
+        'line_0': [4, 4, 4, 4, 4, 4],
     }
 
     print_info()
@@ -39,10 +39,10 @@ if __name__ == '__main__':
                 pos = int(input(f"P_{p % 2}> "))
 
         else:
-            pos = minimax(tab)
+            pos = minimax(tab, 7)
 
-            while not pos_is_playable(tab, pos, p % 2):
-                pos = minimax(tab)
+            # while not pos_is_playable(tab, pos, p % 2):
+            #    pos = minimax(tab, 10)
 
             print("PLAYED: ", pos)
 
