@@ -4,7 +4,7 @@ from constants import LINE_SIZE, PLAYER_1, PLAYER_0
 from utils import final_state as is_final, play, pos_is_playable
 
 
-def minimax(state: dict, deph: int):
+def minimax(state: dict, depth: int):
     to_play = -1
     value = -inf
 
@@ -12,7 +12,7 @@ def minimax(state: dict, deph: int):
 
         if pos_is_playable(state, x, PLAYER_1):
             played = play(state, x, PLAYER_1)
-            game_value = minimizer(played, deph)
+            game_value = minimizer(played, depth)
             if game_value >= value:
                 value = game_value
                 to_play = x
@@ -20,8 +20,8 @@ def minimax(state: dict, deph: int):
     return to_play
 
 
-def maximizer(state: dict, deph: int):
-    if is_final(state) or deph == 0:
+def maximizer(state: dict, depth: int):
+    if is_final(state) or depth == 0:
         return heur(state)
 
     value = -inf
@@ -29,13 +29,13 @@ def maximizer(state: dict, deph: int):
     for x in range(0, LINE_SIZE):
         if pos_is_playable(state, x, PLAYER_1):
             played = play(state, x, PLAYER_1)
-            value = max(value, minimizer(played, deph - 1))
+            value = max(value, minimizer(played, depth - 1))
 
     return value
 
 
-def minimizer(state: dict, deph: int):
-    if is_final(state) or deph == 0:
+def minimizer(state: dict, depth: int):
+    if is_final(state) or depth == 0:
         return heur(state)
 
     value = inf
@@ -43,7 +43,7 @@ def minimizer(state: dict, deph: int):
     for x in range(0, LINE_SIZE):
         if pos_is_playable(state, x, PLAYER_0):
             played = play(state, x, PLAYER_0)
-            value = min(value, maximizer(played, deph - 1))
+            value = min(value, maximizer(played, depth - 1))
 
     return value
 

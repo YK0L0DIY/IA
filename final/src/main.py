@@ -1,4 +1,6 @@
+import time
 from utils import *
+from constants import *
 import copy
 from minimax import minimax
 
@@ -39,10 +41,11 @@ if __name__ == '__main__':
                 pos = int(input(f"P_{p % 2}> "))
 
         else:
-            pos = minimax(tab, 7)
 
-            # while not pos_is_playable(tab, pos, p % 2):
-            #    pos = minimax(tab, 10)
+            start = time.time()
+            pos = minimax(tab, FIFTEEN_SECONDS)
+            end = time.time()
+            print('Evaluation time: {}s'.format(round(end - start, 7)))
 
             print("PLAYED: ", pos)
 
