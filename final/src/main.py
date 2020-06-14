@@ -1,5 +1,6 @@
 from utils import *
 import copy
+from minimax import minimax
 
 if __name__ == '__main__':
 
@@ -13,13 +14,17 @@ if __name__ == '__main__':
     print_info()
     print_state(initial_state)
     tab = copy.deepcopy(initial_state)
-    p = 0
+    p = 1
 
     while not final_state(tab):
 
-        pos = int(input(f"P_{p % 2}> "))
-
-        if pos_is_playable(tab, pos, p % 2):
+        if p % 2 == 0:
+            pos = int(input(f"P_{p % 2}> "))
             tab = play(tab, pos, p % 2)
-            print_state(tab)
-            p += 1
+
+        else:
+            pos = minimax(tab)
+            tab = play(tab, pos, p % 2)
+
+        print_state(tab)
+        p += 1
