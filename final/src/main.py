@@ -2,8 +2,10 @@ from utils import *
 import copy
 from minimax import minimax
 
-if __name__ == '__main__':
+from sys import setrecursionlimit
 
+if __name__ == '__main__':
+    setrecursionlimit(pow(10, 6))
     initial_state = {
         'player_1': 0,
         'player_0': 0,
