@@ -23,19 +23,25 @@ def pos_is_playable(state: dict, pos: int, player: int):
 def play(state: dict, pos: int, player: int):
     result_state = copy.deepcopy(state)
 
-    if player == 1:
-        number_of_elements = result_state['line_1'][pos]
-        result_state['line_1'][pos] = 0
+    if sum(result_state['line_0']) == 1 and sum(result_state['line_1']) == 1:
+        player_1_pos = result_state['line_1'].index(1)
+        player_0_pos = result_state['line_0'].index(1)
+
+        if abs(player_1_pos - player_0_pos) == 5:
+            result_state['line_0'][pos] = 0
+            result_state['line_1'][pos] = 0
+            result_state['player_0'] += 1
+            result_state['player_1'] += 1
 
     else:
-        number_of_elements = result_state['line_0'][pos]
-        result_state['line_0'][pos] = 0
+        number_of_elements = result_state[f'line_{player}'][pos]
+        result_state[f'line_{player}'][pos] = 0
 
-    result_state, last_placed = distribute(result_state, pos + 1, number_of_elements, player, (pos, player))
+        result_state, last_placed = distribute(result_state, pos + 1, number_of_elements, player, (pos, player))
 
-    if player != last_placed['player']:
-        result_state, points = collect(result_state, last_placed)
-        result_state[f'player_{player}'] += points
+        if player != last_placed['player']:
+            result_state, points = collect(result_state, last_placed)
+            result_state[f'player_{player}'] += points
 
     return result_state
 
