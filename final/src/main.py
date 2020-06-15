@@ -1,4 +1,6 @@
 import time
+from random import randint
+
 from utils import *
 from constants import *
 import copy
@@ -10,6 +12,8 @@ from sys import setrecursionlimit
 def print_scores(state: dict):
     print("SCORES: P_0:", tab['player_0'], " P_1:", tab['player_1'])
 
+
+plays = 0
 
 if __name__ == '__main__':
     setrecursionlimit(pow(10, 8))
@@ -35,19 +39,24 @@ if __name__ == '__main__':
     while not final_state(tab):
 
         if p % 2 == 0:
-            pos = int(input(f"P_{p % 2}> "))
+            pos = int(input(f"P_{p % 2}> ")) - 1
 
             while not pos_is_playable(tab, pos, p % 2):
-                pos = int(input(f"P_{p % 2}> "))
+                pos = int(input(f"P_{p % 2}> ")) - 1
 
         else:
 
             start = time.time()
-            pos = minimax(tab, FIFTEEN_SECONDS)
+
+            if plays == 0:
+                pos = randint(0, 6)
+                plays += 1
+            else:
+                pos = minimax(tab, FIVE_SECONDS)
             end = time.time()
             print('Evaluation time: {}s'.format(round(end - start, 7)))
 
-            print("PLAYED: ", pos)
+            print("PLAYED: ", pos + 1)
 
         # else:
         #     pos = int(input(f"P_{p % 2}> "))

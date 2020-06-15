@@ -13,7 +13,7 @@ def minimax(state: dict, depth: int):
         if pos_is_playable(state, x, PLAYER_1):
             played = play(state, x, PLAYER_1)
             game_value = minimizer(played, depth)
-            if game_value >= value:
+            if game_value > value:
                 value = game_value
                 to_play = x
 
