@@ -5,6 +5,7 @@ from utils import *
 from constants import *
 import copy
 from minimax import minimax
+from alphabeta import alphabeta
 
 from sys import setrecursionlimit
 
@@ -49,10 +50,11 @@ if __name__ == '__main__':
             start = time.time()
 
             if plays == 0:
-                pos = randint(0, 6)
+                pos = randint(0, 5)
                 plays += 1
             else:
-                pos = minimax(tab, FIVE_SECONDS)
+                #pos = minimax(tab, FIVE_SECONDS_MINIMAX)
+                pos = alphabeta(tab, FIVE_SECONDS_ALPHABETA)
             end = time.time()
             print('Evaluation time: {}s'.format(round(end - start, 7)))
 
