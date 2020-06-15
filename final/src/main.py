@@ -40,31 +40,38 @@ if __name__ == '__main__':
     while not final_state(tab):
 
         if p % 2 == 0:
-            pos = int(input(f"P_{p % 2}> ")) - 1
+            # pos = int(input(f"P_{p % 2}> ")) - 1
 
-            while not pos_is_playable(tab, pos, p % 2):
-                pos = int(input(f"P_{p % 2}> ")) - 1
+            # while not pos_is_playable(tab, pos, p % 2):
+            #     pos = int(input(f"P_{p % 2}> ")) - 1
+
+            start = time.time()
+            if plays == 0:
+                pos = randint(0, 5)
+                plays += 1
+            else:
+                pos = minimax(tab, THIRTY_SECONDS_MINIMAX)
+
+            end = time.time()
+            print('Evaluation time: {}s'.format(round(end - start, 7)))
+
+            print("P_0 PLAYED: ", pos + 1)
 
         else:
 
             start = time.time()
 
-            if plays == 0:
+            if plays == 1:
                 pos = randint(0, 5)
                 plays += 1
             else:
                 #pos = minimax(tab, FIVE_SECONDS_MINIMAX)
-                pos = alphabeta(tab, FIVE_SECONDS_ALPHABETA)
+                pos = alphabeta(tab, THIRTY_SECONDS_ALPHABETA)
             end = time.time()
             print('Evaluation time: {}s'.format(round(end - start, 7)))
 
-            print("PLAYED: ", pos + 1)
+            print("P_1 PLAYED: ", pos + 1)
 
-        # else:
-        #     pos = int(input(f"P_{p % 2}> "))
-        #
-        #     while not pos_is_playable(tab, pos, p % 2):
-        #         pos = int(input(f"P_{p % 2}> "))
 
         tab = play(tab, pos, p % 2)
         print_state(tab)
