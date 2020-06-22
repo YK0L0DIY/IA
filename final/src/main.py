@@ -1,5 +1,6 @@
 import time
 from random import randint
+import argparse
 
 from utils import *
 from constants import *
@@ -17,6 +18,19 @@ def print_scores(state: dict):
 plays = 0
 
 if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser(prog='IA_final', description='Final project, OURI game')
+
+    parser.add_argument('-p, --first', action='store_true', dest='first', help='To play first',
+                        required=False)
+    parser.add_argument('-s, --second', action='store_true', dest='second', help='To play second',
+                        required=False)
+
+    args = parser.parse_args()
+
+    # funciona como um dicionario, se -p ent args.first vai estar a true e se -s ent args.second vai estar a true
+    # charmar com python main.py -f 
+
     setrecursionlimit(pow(10, 8))
 
     # initial_state = {
