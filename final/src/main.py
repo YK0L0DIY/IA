@@ -25,7 +25,14 @@ if __name__ == '__main__':
                         required=False)
     parser.add_argument('-s, --second', action='store_true', dest='second', help='To play second',
                         required=False)
-
+    parser.add_argument('-t, --board', action='store_true', dest='board', help='To display the board',
+                        required=False)
+    parser.add_argument('-d, --difficulty', type=str, dest='difficulty',
+                        help='The difficulty of the game, a -> 5s, b -> 15s and c -> 30s',
+                        required=True)
+    parser.add_argument('-e, --state', type=dict, dest='state',
+                        help='The difficulty of the game, a -> 5s, b -> 15s and c -> 30s',
+                        required=False)
     args = parser.parse_args()
 
     # funciona como um dicionario, se -p ent args.first vai estar a true e se -s ent args.second vai estar a true
@@ -49,16 +56,26 @@ if __name__ == '__main__':
     print_info()
     print_state(initial_state)
     tab = copy.deepcopy(initial_state)
-    p = 0
+
+    print(args)
+
+    if args.first:
+        p = 1
+    elif args.second:
+        p = 0
+    else:
+        p = 0
+
+    if args.difficulty == 'a':
+        difficulty = FIVE_SECONDS_ALPHABETA
+    elif args.difficulty == 'b':
+        difficulty = FIFTEEN_SECONDS_ALPHABETA
+    elif args.difficulty == 'c':
+        difficulty = THIRTY_SECONDS_ALPHABETA
 
     while not final_state(tab):
 
         if p % 2 == 0:
-            # pos = int(input(f"P_{p % 2}> ")) - 1
-
-            # while not pos_is_playable(tab, pos, p % 2):
-            #     pos = int(input(f"P_{p % 2}> ")) - 1
-
             start = time.time()
             if plays == 0:
                 pos = randint(0, 5)
@@ -79,23 +96,25 @@ if __name__ == '__main__':
                 pos = randint(0, 5)
                 plays += 1
             else:
-                # pos = minimax(tab, FIVE_SECONDS_MINIMAX)
                 pos = alphabeta(tab, THIRTY_SECONDS_ALPHABETA)
+
             end = time.time()
             print('Evaluation time: {}s'.format(round(end - start, 7)))
 
             print("P_1 PLAYED: ", pos + 1)
 
         tab = play(tab, pos, p % 2)
-        print_state(tab)
+
+        if args.board:
+            print_state(tab)
         p += 1
 
-    if tab['player_1'] > tab['player_0']:
-        print("PLAYER 1 WON!")
-    elif tab['player_0'] > tab['player_1']:
-        print("PLAYER 0 WON!")
-    else:
-        print("IT'S A DRAW!")
+        if tab['player_1'] > tab['player_0']:
+            print("PLAYER 1 WON!")
+        elif tab['player_0'] > tab['player_1']:
+            print("PLAYER 0 WON!")
+        else:
+            print("IT'S A DRAW!")
 
-    print_scores(tab)
-    print_state(tab)
+        print_scores(tab)
+        print_state(tab)
