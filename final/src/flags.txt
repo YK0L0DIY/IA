@@ -1,0 +1,6 @@
+-h, --help         show this help message and exit
+-p, --first        To play first
+-s, --second       To play second
+-t, --board        To display the board
+-r, --answer       To display a single an answer
+-d, --level LEVEL  The level of the game, a -> 5s, b -> 15s and c -> 30s

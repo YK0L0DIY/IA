@@ -35,22 +35,19 @@ if __name__ == '__main__':
                         required=False)
     parser.add_argument('-r, --answer', action='store_true', dest='singleAnswer', help='To display a single an answer',
                         required=False)
-    parser.add_argument('-d, --difficulty', type=str, dest='difficulty',
-                        help='The difficulty of the game, a -> 5s, b -> 15s and c -> 30s',
+    parser.add_argument('-d, --level', type=str, dest='level',
+                        help='The level of the game, a -> 5s, b -> 15s and c -> 30s',
                         required=True)
 
     args = parser.parse_args()
 
-    # funciona como um dicionario, se -p ent args.first vai estar a true e se -s ent args.second vai estar a true
-    # charmar com python main.py -f 
-
     setrecursionlimit(pow(10, 8))
 
     # initial_state = {
-    #     'player_1': 25,
-    #     'player_0': 0,
-    #     'line_1': [0, 0, 0, 0, 0, 2],
-    #     'line_0': [2, 1, 0, 0, 0, 2],
+    #     'player_1': player1 score,
+    #     'player_0': player0 score,
+    #     'line_1': [1, 2, 3, 4, 5, 6], mirrored view of the opponents side of the board
+    #     'line_0': [1, 2, 3, 4, 5, 6],
     # }
     initial_state = {
         'player_1': 0,
@@ -64,20 +61,18 @@ if __name__ == '__main__':
     player0_plays = 0
     player1_plays = 0
 
-    print(args)
-
     if args.singleAnswer:
 
-        if args.difficulty == 'a':
-            difficulty = FIVE_SECONDS_ALPHABETA_SA
-        elif args.difficulty == 'b':
-            difficulty = FIFTEEN_SECONDS_ALPHABETA_SA
-        elif args.difficulty == 'c':
-            difficulty = THIRTY_SECONDS_ALPHABETA_SA
+        if args.level == 'a':
+            level = FIVE_SECONDS_ALPHABETA_SA
+        elif args.level == 'b':
+            level = FIFTEEN_SECONDS_ALPHABETA_SA
+        elif args.level == 'c':
+            level = THIRTY_SECONDS_ALPHABETA_SA
 
         start = time.time()
 
-        pos = alphabeta(tab, difficulty)
+        pos = alphabeta(tab, level)
 
         end = time.time()
         print('Evaluation time: {}s'.format(round(end - start, 7)))
@@ -89,20 +84,20 @@ if __name__ == '__main__':
 
     else:
 
-        if args.difficulty == 'a':
+        if args.level == 'a':
 
-            difficulty = FIVE_SECONDS_ALPHABETA
-            m_difficulty = FIVE_SECONDS_MINIMAX
+            level = FIVE_SECONDS_ALPHABETA
+            m_level = FIVE_SECONDS_MINIMAX
 
-        elif args.difficulty == 'b':
+        elif args.level == 'b':
 
-            difficulty = FIFTEEN_SECONDS_ALPHABETA
-            m_difficulty = FIFTEEN_SECONDS_MINIMAX
+            level = FIFTEEN_SECONDS_ALPHABETA
+            m_level = FIFTEEN_SECONDS_MINIMAX
 
-        elif args.difficulty == 'c':
+        elif args.level == 'c':
 
-            difficulty = THIRTY_SECONDS_ALPHABETA
-            m_difficulty = THIRTY_SECONDS_MINIMAX
+            level = THIRTY_SECONDS_ALPHABETA
+            m_level = THIRTY_SECONDS_MINIMAX
 
         if args.first:
             p = 1
@@ -114,15 +109,7 @@ if __name__ == '__main__':
         while not final_state(tab):
 
             if p % 2 == 0:
-                start = time.time()
-                if player0_plays == 0:
-                    pos = randint(0, 5)
-                    player0_plays += 1
-                else:
-                    pos = minimax(tab, m_difficulty)
-
-                end = time.time()
-                print('Evaluation time: {}s'.format(round(end - start, 7)))
+                pos = int(input("> ")) - 1
 
                 print("P_0 PLAYED: ", pos + 1)
 
@@ -134,7 +121,7 @@ if __name__ == '__main__':
                     pos = randint(0, 5)
                     player1_plays += 1
                 else:
-                    pos = alphabeta(tab, difficulty)
+                    pos = alphabeta(tab, level)
 
                 end = time.time()
                 print('Evaluation time: {}s'.format(round(end - start, 7)))

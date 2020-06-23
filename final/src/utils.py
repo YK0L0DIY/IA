@@ -1,4 +1,8 @@
-from termcolor import colored
+try:
+    from termcolor import colored
+    colors = True
+except:
+    colors = False
 from constants import *
 import copy
 
@@ -90,7 +94,6 @@ def game_over(state: dict):
 
 
 def final_state(state: dict):
-
     if not game_over(state):
 
         if sum(state['line_0']) == 1 and sum(state['line_1']) == 1:
@@ -114,11 +117,17 @@ def final_state(state: dict):
 def print_state(state: dict):
     up_line = state['line_1']
     dow_line = state['line_0']
-    print(f"┌{colored('P_1', 'red')}----------------------------┐\n" +
-          f"| {colored(state['player_1'], 'red')} | {up_line[5]} | {up_line[4]} | {up_line[3]} | {up_line[2]} | {up_line[1]} | {up_line[0]} |   |\n" +
-          f"|   | {dow_line[0]} | {dow_line[1]} | {dow_line[2]} | {dow_line[3]} | {dow_line[4]} | {dow_line[5]} | {colored(state['player_0'], 'blue')} |\n" +
-          f"└----------------------------{colored('P_0', 'blue')}┘")
 
+    if colors:
+        print(f"┌{colored('P_1', 'red')}----------------------------┐\n" +
+              f"| {colored(state['player_1'], 'red')} | {up_line[5]} | {up_line[4]} | {up_line[3]} | {up_line[2]} | {up_line[1]} | {up_line[0]} |   |\n" +
+              f"|   | {dow_line[0]} | {dow_line[1]} | {dow_line[2]} | {dow_line[3]} | {dow_line[4]} | {dow_line[5]} | {colored(state['player_0'], 'blue')} |\n" +
+              f"└----------------------------{colored('P_0', 'blue')}┘")
+    else:
+        print(f"┌'P_1'----------------------------┐\n" +
+              f"| {colored(state['player_1'], 'red')} | {up_line[5]} | {up_line[4]} | {up_line[3]} | {up_line[2]} | {up_line[1]} | {up_line[0]} |   |\n" +
+              f"|   | {dow_line[0]} | {dow_line[1]} | {dow_line[2]} | {dow_line[3]} | {dow_line[4]} | {dow_line[5]} | {colored(state['player_0'], 'blue')} |\n" +
+              f"└----------------------------'P_0'┘")
 
 def print_info():
     print('Consider this positions \n' +
