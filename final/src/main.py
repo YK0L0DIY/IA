@@ -27,16 +27,16 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(prog='IA_final', description='Final project, OURI game')
 
-    parser.add_argument('-p, --first', action='store_true', dest='first', help='To play first',
+    parser.add_argument('-p, --first', action='store_true', dest='first', help='Opponent (PC) plays first',
                         required=False)
-    parser.add_argument('-s, --second', action='store_true', dest='second', help='To play second',
+    parser.add_argument('-s, --second', action='store_true', dest='second', help='Opponent (PC) plays play second',
                         required=False)
-    parser.add_argument('-t, --board', action='store_true', dest='board', help='To display the board',
+    parser.add_argument('-t, --board', action='store_true', dest='board', help='Displays the board during the game',
                         required=False)
-    parser.add_argument('-r, --answer', action='store_true', dest='singleAnswer', help='To display a single an answer',
+    parser.add_argument('-r, --answer', action='store_true', dest='singleAnswer', help='Displays a single an answer',
                         required=False)
     parser.add_argument('-d, --level', type=str, dest='level',
-                        help='The level of the game, a -> 5s, b -> 15s and c -> 30s',
+                        help='Choose the level of the game. a for 5s, b for 15s and c for 30s',
                         required=True)
 
     args = parser.parse_args()
