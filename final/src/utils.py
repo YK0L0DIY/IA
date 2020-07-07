@@ -90,7 +90,7 @@ def distribute(state: dict, start: int, elements: int, player: int, inicial: tup
 
 
 def game_over(state: dict):
-    return state['player_0'] > MAX_SCORE or state['player_1'] > MAX_SCORE
+    return state['player_0'] >= MAX_SCORE or state['player_1'] >= MAX_SCORE
 
 
 def final_state(state: dict):
